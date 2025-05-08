@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-@brief      This is program for stream video from Tello camera and detect ArUco markers.
+@brief      This is program for streaming video from Tello camera and detect ArUco markers in the feed.
 @author     Aaron Xavier
 @date       08-May-2025
 """
