@@ -24,6 +24,9 @@ class Tello:
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
         self.aruco_params = cv2.aruco.DetectorParameters()
         self.aruco_detector = cv2.aruco.ArucoDetector(self.aruco_dict, self.aruco_params)
+        # Initialize detection counter
+        self.detection_count = 0
+        self.last_detected_ids = set()
 
     def terminate(self):
         self._running = False
@@ -38,13 +41,28 @@ class Tello:
         # Detect markers
         corners, ids, rejected = self.aruco_detector.detectMarkers(gray)
         
-        # Draw detected markers
+        # Draw detected markers and update counter
         if ids is not None:
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
             
-            # Print marker IDs
+            # Get current detected IDs
+            current_ids = {id[0] for id in ids}
+            
+            # Count new detections (IDs not seen in previous frame)
+            new_detections = current_ids - self.last_detected_ids
+            self.detection_count += len(new_detections)
+            
+            # Update last detected IDs
+            self.last_detected_ids = current_ids
+            
+            # Print marker IDs and total count
             for i in range(len(ids)):
                 print(f"Detected ArUco marker ID: {ids[i][0]}")
+            print(f"Total detections: {self.detection_count}")
+            
+            # Display count on frame
+            cv2.putText(frame, f"Detections: {self.detection_count}", 
+                       (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 
         return frame
 
