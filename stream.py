@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 """
-@brief      This is program for stream video from Tello camera.
-@author     Murtadha Bazli Tukimat
-@date       17-Nov-2020
+@brief      This is program for stream video from Tello camera and detect ArUco markers.
+@author     Aaron Xavier
+@date       08-May-2025
 """
 
 import threading
